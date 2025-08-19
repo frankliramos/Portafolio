@@ -1,2 +1,0 @@
-# Portafolio
-portafolio de trabajo
