@@ -1,0 +1,5 @@
+RiskSegment,Customer_Count,Avg_Risk_Score,Risk_Score_Std,Avg_Tenure,Avg_Monthly_Charges,Avg_Total_Charges
+Critical Risk,405,77.13,2.56,6.82,116.4,836.54
+High Risk,2921,68.78,3.72,15.72,85.9,1384.23
+Low Risk,1869,21.0,2.87,27.77,70.35,2045.04
+Medium Risk,1848,29.05,3.11,16.98,88.76,1583.78

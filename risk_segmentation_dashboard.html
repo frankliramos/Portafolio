@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Customer Risk Segmentation Dashboard</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 30px;
+            border-radius: 10px;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .header h1 {
+            margin: 0;
+            font-size: 2.5em;
+        }
+        .header p {
+            margin: 10px 0 0 0;
+            font-size: 1.2em;
+            opacity: 0.9;
+        }
+        .dashboard {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+        }
+        .card {
+            background: white;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: transform 0.2s;
+        }
+        .card:hover {
+            transform: translateY(-5px);
+        }
+        .card h3 {
+            margin-top: 0;
+            color: #333;
+            border-bottom: 2px solid #eee;
+            padding-bottom: 10px;
+        }
+        .risk-critical {
+            border-left: 5px solid #ff4757;
+        }
+        .risk-high {
+            border-left: 5px solid #ff9800;
+        }
+        .risk-medium {
+            border-left: 5px solid #ffc107;
+        }
+        .risk-low {
+            border-left: 5px solid #4caf50;
+        }
+        .metric {
+            display: flex;
+            justify-content: space-between;
+            margin: 10px 0;
+            padding: 10px;
+            background: #f8f9fa;
+            border-radius: 5px;
+        }
+        .metric-label {
+            font-weight: bold;
+        }
+        .metric-value {
+            color: #555;
+        }
+        .recommendation {
+            background: #e3f2fd;
+            border: 1px solid #2196f3;
+            border-radius: 5px;
+            padding: 15px;
+            margin: 10px 0;
+        }
+        .recommendation h4 {
+            margin: 0 0 10px 0;
+            color: #1976d2;
+        }
+        .recommendation ul {
+            margin: 0;
+            padding-left: 20px;
+        }
+        .recommendation li {
+            margin: 5px 0;
+        }
+        .summary-stats {
+            grid-column: 1 / -1;
+            background: linear-gradient(45deg, #f093fb 0%, #f5576c 100%);
+            color: white;
+        }
+        .summary-stats .metric {
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+        }
+        .chart-placeholder {
+            background: #f8f9fa;
+            border: 2px dashed #dee2e6;
+            padding: 40px;
+            text-align: center;
+            border-radius: 5px;
+            margin: 20px 0;
+            color: #6c757d;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>🎯 Customer Risk Segmentation Dashboard</h1>
+        <p>Telco Customer Analysis - 7,043 Customers Segmented</p>
+    </div>
+
+    <div class="dashboard">
+        <!-- Summary Statistics -->
+        <div class="card summary-stats">
+            <h3>📊 Executive Summary</h3>
+            <div class="metric">
+                <span class="metric-label">Total Customers Analyzed</span>
+                <span class="metric-value">7,043</span>
+            </div>
+            <div class="metric">
+                <span class="metric-label">Monthly Revenue at Risk</span>
+                <span class="metric-value">$317,487</span>
+            </div>
+            <div class="metric">
+                <span class="metric-label">Annual Revenue at Risk</span>
+                <span class="metric-value">$3,809,844</span>
+            </div>
+            <div class="metric">
+                <span class="metric-label">Customers Needing Immediate Attention</span>
+                <span class="metric-value">3,326 (47.3%)</span>
+            </div>
+        </div>
+
+        <!-- Critical Risk Segment -->
+        <div class="card risk-critical">
+            <h3>🚨 Critical Risk (5.8%)</h3>
+            <div class="metric">
+                <span class="metric-label">Customer Count</span>
+                <span class="metric-value">405</span>
+            </div>
+            <div class="metric">
+                <span class="metric-label">Average Tenure</span>
+                <span class="metric-value">6.8 months</span>
+            </div>
+            <div class="metric">
+                <span class="metric-label">Average Monthly Charges</span>
+                <span class="metric-value">$116.40</span>
+            </div>
+            <div class="metric">
+                <span class="metric-label">Churn Rate</span>
+                <span class="metric-value">100%</span>
+            </div>
+            <div class="recommendation">
+                <h4>Immediate Actions Required</h4>
+                <ul>
+                    <li>Deploy retention specialists for personal outreach</li>
+                    <li>Offer special retention packages and loyalty rewards</li>
+                    <li>Switch to annual payment plans with discounts</li>
+                    <li>Provide premium customer support</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- High Risk Segment -->
+        <div class="card risk-high">
+            <h3>⚠️ High Risk (41.5%)</h3>
+            <div class="metric">
+                <span class="metric-label">Customer Count</span>
+                <span class="metric-value">2,921</span>
+            </div>
+            <div class="metric">
+                <span class="metric-label">Average Tenure</span>
+                <span class="metric-value">15.7 months</span>
+            </div>
+            <div class="metric">
+                <span class="metric-label">Average Monthly Charges</span>
+                <span class="metric-value">$85.90</span>
+            </div>
+            <div class="metric">
+                <span class="metric-label">Churn Rate</span>
+                <span class="metric-value">100%</span>
+            </div>
+            <div class="recommendation">
+                <h4>Proactive Intervention Needed</h4>
+                <ul>
+                    <li>Implement targeted retention campaigns</li>
+                    <li>Offer contract upgrade incentives</li>
+                    <li>Send satisfaction surveys and act on feedback</li>
+                    <li>Monitor usage patterns for early warnings</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Medium Risk Segment -->
+        <div class="card risk-medium">
+            <h3>📊 Medium Risk (26.2%)</h3>
+            <div class="metric">
+                <span class="metric-label">Customer Count</span>
+                <span class="metric-value">1,848</span>
+            </div>
+            <div class="metric">
+                <span class="metric-label">Average Tenure</span>
+                <span class="metric-value">17.0 months</span>
+            </div>
+            <div class="metric">
+                <span class="metric-label">Average Monthly Charges</span>
+                <span class="metric-value">$88.76</span>
+            </div>
+            <div class="metric">
+                <span class="metric-label">Churn Rate</span>
+                <span class="metric-value">0%</span>
+            </div>
+            <div class="recommendation">
+                <h4>Monitor and Nurture</h4>
+                <ul>
+                    <li>Regular check-in communications</li>
+                    <li>Offer service optimization recommendations</li>
+                    <li>Provide educational content about benefits</li>
+                    <li>Monitor for changes in usage patterns</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Low Risk Segment -->
+        <div class="card risk-low">
+            <h3>✅ Low Risk (26.5%)</h3>
+            <div class="metric">
+                <span class="metric-label">Customer Count</span>
+                <span class="metric-value">1,869</span>
+            </div>
+            <div class="metric">
+                <span class="metric-label">Average Tenure</span>
+                <span class="metric-value">27.8 months</span>
+            </div>
+            <div class="metric">
+                <span class="metric-label">Average Monthly Charges</span>
+                <span class="metric-value">$70.35</span>
+            </div>
+            <div class="metric">
+                <span class="metric-label">Churn Rate</span>
+                <span class="metric-value">0%</span>
+            </div>
+            <div class="recommendation">
+                <h4>Maintain and Grow</h4>
+                <ul>
+                    <li>Focus on upselling and cross-selling</li>
+                    <li>Use as advocates for referral programs</li>
+                    <li>Gather testimonials and case studies</li>
+                    <li>Consider for beta testing new services</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Key Insights -->
+        <div class="card" style="grid-column: 1 / -1;">
+            <h3>💡 Key Business Insights</h3>
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px;">
+                <div>
+                    <h4>Contract Risk Patterns</h4>
+                    <ul>
+                        <li><strong>98.3%</strong> of Critical Risk customers on month-to-month contracts</li>
+                        <li><strong>59%</strong> of Medium Risk customers could be converted to annual contracts</li>
+                        <li><strong>Two-year contracts</strong> show 0% churn rate in this dataset</li>
+                    </ul>
+                </div>
+                <div>
+                    <h4>Payment Method Risks</h4>
+                    <ul>
+                        <li><strong>Electronic check</strong> users show highest churn rates</li>
+                        <li><strong>Automatic payments</strong> correlate with customer stability</li>
+                        <li><strong>79%</strong> of Critical Risk customers use electronic check</li>
+                    </ul>
+                </div>
+                <div>
+                    <h4>Revenue Opportunities</h4>
+                    <ul>
+                        <li><strong>Critical Risk customers</strong> have highest monthly charges ($116.40)</li>
+                        <li><strong>1,848 Medium Risk customers</strong> ready for upselling</li>
+                        <li><strong>Low Risk segment</strong> shows potential for service expansion</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Implementation Timeline -->
+        <div class="card" style="grid-column: 1 / -1; background: linear-gradient(45deg, #4facfe 0%, #00f2fe 100%); color: white;">
+            <h3>🚀 Implementation Roadmap</h3>
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px;">
+                <div style="background: rgba(255,255,255,0.1); padding: 15px; border-radius: 5px;">
+                    <h4>Week 1: Critical Risk</h4>
+                    <p>Deploy retention specialists for 405 critical customers. Launch immediate intervention programs.</p>
+                </div>
+                <div style="background: rgba(255,255,255,0.1); padding: 15px; border-radius: 5px;">
+                    <h4>Week 2-3: High Risk</h4>
+                    <p>Launch targeted retention campaigns for 2,921 high-risk customers. Focus on contract upgrades.</p>
+                </div>
+                <div style="background: rgba(255,255,255,0.1); padding: 15px; border-radius: 5px;">
+                    <h4>Month 1: Medium Risk</h4>
+                    <p>Implement monitoring and nurturing systems for 1,848 medium-risk customers.</p>
+                </div>
+                <div style="background: rgba(255,255,255,0.1); padding: 15px; border-radius: 5px;">
+                    <h4>Ongoing: Low Risk</h4>
+                    <p>Maintain growth strategies and leverage 1,869 loyal customers for referrals and upselling.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div style="text-align: center; margin-top: 40px; color: #666; font-style: italic;">
+        <p>Customer Risk Segmentation Analysis | Generated from Telco Customer Data | Portfolio Project 2024</p>
+    </div>
+</body>
+</html>
