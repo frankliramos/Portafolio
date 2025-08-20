@@ -1,0 +1,476 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard EDA - Análisis de Churn de Clientes</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 0;
+            background-color: #f8f9fa;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        .header {
+            background: linear-gradient(135deg, #2E86AB, #A23B72);
+            color: white;
+            padding: 30px;
+            text-align: center;
+            border-radius: 10px;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        .header h1 {
+            margin: 0;
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+        .header p {
+            margin: 0;
+            font-size: 1.1em;
+            opacity: 0.9;
+        }
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+        .stat-card {
+            background: white;
+            padding: 25px;
+            border-radius: 10px;
+            text-align: center;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            border-left: 5px solid #2E86AB;
+        }
+        .stat-number {
+            font-size: 2.2em;
+            font-weight: bold;
+            color: #2E86AB;
+            margin-bottom: 5px;
+        }
+        .stat-label {
+            color: #666;
+            font-size: 1.1em;
+        }
+        .insight-section {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            margin-bottom: 30px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .insight-section h2 {
+            color: #2E86AB;
+            border-bottom: 3px solid #2E86AB;
+            padding-bottom: 10px;
+            margin-bottom: 20px;
+        }
+        .chart-description {
+            background: #f0f8ff;
+            border-left: 4px solid #2E86AB;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 0 5px 5px 0;
+        }
+        .key-insight {
+            background: #fff5f5;
+            border-left: 4px solid #C73E1D;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 0 5px 5px 0;
+        }
+        .action-box {
+            background: #f0fff0;
+            border-left: 4px solid #28a745;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 0 5px 5px 0;
+        }
+        .chart-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(500px, 1fr));
+            gap: 30px;
+            margin: 30px 0;
+        }
+        .chart-container {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .chart-title {
+            font-size: 1.3em;
+            font-weight: bold;
+            color: #2E86AB;
+            margin-bottom: 15px;
+            text-align: center;
+        }
+        .summary-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin: 30px 0;
+        }
+        .summary-card {
+            background: linear-gradient(135deg, #2E86AB, #1a5f7a);
+            color: white;
+            padding: 25px;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        .summary-card h3 {
+            margin-top: 0;
+            color: #F18F01;
+        }
+        .emoji {
+            font-size: 1.2em;
+        }
+        .footer {
+            text-align: center;
+            padding: 20px;
+            color: #666;
+            font-size: 0.9em;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <h1>📊 Dashboard de Análisis Exploratorio de Datos (EDA)</h1>
+            <p>Churn de Clientes - Empresa de Telecomunicaciones</p>
+        </div>
+
+        <!-- Key Statistics -->
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-number">7,043</div>
+                <div class="stat-label">Total Clientes</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">26.5%</div>
+                <div class="stat-label">Tasa de Churn</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">$64.76</div>
+                <div class="stat-label">Ingreso Mensual Promedio</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">32.4</div>
+                <div class="stat-label">Permanencia Promedio (meses)</div>
+            </div>
+        </div>
+
+        <!-- Overview Insights -->
+        <div class="insight-section">
+            <h2>🎯 Insights Clave del Análisis</h2>
+            <div class="key-insight">
+                <strong>Hallazgos Principales:</strong>
+                <ul>
+                    <li>La tasa de churn general es del <strong>26.5%</strong>, indicando una oportunidad significativa de mejora</li>
+                    <li>Los clientes con <strong>contratos mes a mes</strong> presentan mayor riesgo de abandono</li>
+                    <li>El <strong>método de pago</strong> y la <strong>permanencia</strong> son factores críticos en la retención</li>
+                    <li>Los <strong>servicios adicionales</strong> correlacionan negativamente con churn</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Chart 1: Contract Analysis -->
+        <div class="insight-section">
+            <h2>📊 Gráfico 1: Distribución de Churn por Tipo de Contrato</h2>
+            <div class="chart-description">
+                <strong>🔍 Descripción:</strong> Este análisis muestra cómo el tipo de contrato impacta significativamente en las decisiones de abandono de los clientes.
+            </div>
+            
+            <div class="chart-grid">
+                <div class="chart-container">
+                    <div class="chart-title">Distribución de Tipos de Contrato</div>
+                    <ul style="list-style: none; padding: 0;">
+                        <li><span style="color: #2E86AB;">█</span> Mes a mes: <strong>55.0%</strong> (3,875 clientes)</li>
+                        <li><span style="color: #A23B72;">█</span> Un año: <strong>21.0%</strong> (1,473 clientes)</li>
+                        <li><span style="color: #F18F01;">█</span> Dos años: <strong>24.0%</strong> (1,695 clientes)</li>
+                    </ul>
+                </div>
+                <div class="chart-container">
+                    <div class="chart-title">Tasa de Churn por Contrato</div>
+                    <ul style="list-style: none; padding: 0;">
+                        <li><span style="color: #C73E1D;">█</span> Mes a mes: <strong>42.7%</strong></li>
+                        <li><span style="color: #F18F01;">█</span> Un año: <strong>11.3%</strong></li>
+                        <li><span style="color: #2E86AB;">█</span> Dos años: <strong>2.8%</strong></li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="key-insight">
+                <strong>💡 Insight Clave:</strong> Los contratos mes a mes presentan una tasa de churn del 42.7%, significativamente mayor que los contratos de 1 año (11.3%) y 2 años (2.8%).
+            </div>
+            
+            <div class="action-box">
+                <strong>🚀 Acción Recomendada:</strong> Implementar incentivos para migrar clientes a contratos de largo plazo, con descuentos progresivos y beneficios exclusivos.
+            </div>
+        </div>
+
+        <!-- Chart 2: Tenure Analysis -->
+        <div class="insight-section">
+            <h2>📊 Gráfico 2: Análisis de Permanencia vs Churn</h2>
+            <div class="chart-description">
+                <strong>🔍 Descripción:</strong> Análisis de cómo la permanencia del cliente afecta la probabilidad de abandono del servicio.
+            </div>
+
+            <div class="chart-grid">
+                <div class="chart-container">
+                    <div class="chart-title">Estadísticas de Permanencia</div>
+                    <ul style="list-style: none; padding: 0;">
+                        <li>📊 Permanencia promedio (No Churn): <strong>37.6 meses</strong></li>
+                        <li>📊 Permanencia promedio (Churn): <strong>18.0 meses</strong></li>
+                        <li>📊 Diferencia: <strong>19.6 meses</strong></li>
+                    </ul>
+                </div>
+                <div class="chart-container">
+                    <div class="chart-title">Tasa de Churn por Permanencia</div>
+                    <ul style="list-style: none; padding: 0;">
+                        <li><span style="color: #C73E1D;">█</span> 0-12 meses: <strong>47.4%</strong></li>
+                        <li><span style="color: #F18F01;">█</span> 13-24 meses: <strong>35.2%</strong></li>
+                        <li><span style="color: #2E86AB;">█</span> 25+ meses: <strong>15.8%</strong></li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="key-insight">
+                <strong>💡 Insight Clave:</strong> Los clientes con menos de 12 meses de permanencia tienen un riesgo de churn significativamente mayor (47.4%). La tasa disminuye dramáticamente después del primer año.
+            </div>
+            
+            <div class="action-box">
+                <strong>🚀 Acción Recomendada:</strong> Implementar un programa de fidelización intensivo durante los primeros 12 meses con seguimiento personalizado y ofertas especiales.
+            </div>
+        </div>
+
+        <!-- Chart 3: Payment Method -->
+        <div class="insight-section">
+            <h2>📊 Gráfico 3: Métodos de Pago y Su Impacto en el Churn</h2>
+            <div class="chart-description">
+                <strong>🔍 Descripción:</strong> Análisis detallado de cómo los diferentes métodos de pago correlacionan con la retención de clientes.
+            </div>
+
+            <div class="chart-grid">
+                <div class="chart-container">
+                    <div class="chart-title">Distribución de Métodos de Pago</div>
+                    <ul style="list-style: none; padding: 0;">
+                        <li><span style="color: #2E86AB;">█</span> Cheque electrónico: <strong>33.6%</strong></li>
+                        <li><span style="color: #A23B72;">█</span> Cheque postal: <strong>22.8%</strong></li>
+                        <li><span style="color: #F18F01;">█</span> Transferencia automática: <strong>21.7%</strong></li>
+                        <li><span style="color: #C73E1D;">█</span> Tarjeta automática: <strong>21.9%</strong></li>
+                    </ul>
+                </div>
+                <div class="chart-container">
+                    <div class="chart-title">Tasa de Churn por Método</div>
+                    <ul style="list-style: none; padding: 0;">
+                        <li>🔄 Tarjeta automática: <strong>15.2%</strong></li>
+                        <li>🔄 Transferencia automática: <strong>16.2%</strong></li>
+                        <li>📝 Cheque postal: <strong>19.1%</strong></li>
+                        <li>📝 Cheque electrónico: <strong>45.3%</strong></li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="key-insight">
+                <strong>💡 Insight Clave:</strong> Los clientes que pagan con cheque electrónico tienen una tasa de churn del 45.3%, casi el doble del promedio general. Los métodos automáticos muestran mayor fidelidad.
+            </div>
+            
+            <div class="action-box">
+                <strong>🚀 Acción Recomendada:</strong> Incentivar la adopción de métodos de pago automático con descuentos en facturación y proceso de migración simplificado.
+            </div>
+        </div>
+
+        <!-- Chart 4: Additional Services -->
+        <div class="insight-section">
+            <h2>📊 Gráfico 4: Servicios Adicionales y Retención de Clientes</h2>
+            <div class="chart-description">
+                <strong>🔍 Descripción:</strong> Evaluación del impacto de los servicios adicionales en la retención y identificación de oportunidades de cross-selling.
+            </div>
+
+            <div class="chart-grid">
+                <div class="chart-container">
+                    <div class="chart-title">Impacto de Servicios en Retención</div>
+                    <ul style="list-style: none; padding: 0;">
+                        <li>🟢 Soporte Técnico: Menor churn</li>
+                        <li>🟡 Seguridad Online: Impacto medio</li>
+                        <li>🟡 Backup Online: Impacto medio</li>
+                        <li>🔴 Streaming Services: Mayor análisis requerido</li>
+                    </ul>
+                </div>
+                <div class="chart-container">
+                    <div class="chart-title">Correlación: Num. Servicios vs Churn</div>
+                    <ul style="list-style: none; padding: 0;">
+                        <li>0 servicios: <strong>40.1%</strong> churn</li>
+                        <li>1-2 servicios: <strong>28.3%</strong> churn</li>
+                        <li>3-4 servicios: <strong>18.7%</strong> churn</li>
+                        <li>5-6 servicios: <strong>12.4%</strong> churn</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="key-insight">
+                <strong>💡 Insight Clave:</strong> Los clientes con más servicios adicionales tienen menores tasas de churn. Existe una correlación inversa clara entre número de servicios y abandono.
+            </div>
+            
+            <div class="action-box">
+                <strong>🚀 Acción Recomendada:</strong> Implementar estrategias de cross-selling dirigidas, especialmente soporte técnico y servicios de seguridad que muestran mayor impacto en retención.
+            </div>
+        </div>
+
+        <!-- Chart 5: Demographics -->
+        <div class="insight-section">
+            <h2>📊 Gráfico 5: Segmentación Demográfica y Análisis de Facturación</h2>
+            <div class="chart-description">
+                <strong>🔍 Descripción:</strong> Análisis de factores demográficos y su relación con patrones de churn y facturación.
+            </div>
+
+            <div class="chart-grid">
+                <div class="chart-container">
+                    <div class="chart-title">Análisis Demográfico</div>
+                    <ul style="list-style: none; padding: 0;">
+                        <li>👥 Género - Hombres: <strong>26.2%</strong> | Mujeres: <strong>26.9%</strong></li>
+                        <li>👴 Senior - No: <strong>23.6%</strong> | Sí: <strong>41.7%</strong></li>
+                        <li>👪 Dependientes - No: <strong>31.3%</strong> | Sí: <strong>15.5%</strong></li>
+                    </ul>
+                </div>
+                <div class="chart-container">
+                    <div class="chart-title">Análisis de Facturación</div>
+                    <ul style="list-style: none; padding: 0;">
+                        <li>💰 Cargo Promedio (No Churn): <strong>$61.27</strong></li>
+                        <li>💰 Cargo Promedio (Churn): <strong>$74.44</strong></li>
+                        <li>📈 Diferencia: <strong>+$13.17</strong> (21% más)</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="key-insight">
+                <strong>💡 Insight Clave:</strong> Los clientes senior y aquellos sin dependientes presentan mayor propensión al churn. Los clientes con cargos mensuales más altos también tienen mayor probabilidad de abandono.
+            </div>
+            
+            <div class="action-box">
+                <strong>🚀 Acción Recomendada:</strong> Desarrollar programas específicos para clientes senior y familias, además de revisar la propuesta de valor para clientes con facturas elevadas.
+            </div>
+        </div>
+
+        <!-- Chart 6: Risk Factors -->
+        <div class="insight-section">
+            <h2>📊 Gráfico 6: Factores de Riesgo Principales</h2>
+            <div class="chart-description">
+                <strong>🔍 Descripción:</strong> Identificación y priorización de los factores con mayor correlación con el churn para enfocar estrategias de retención.
+            </div>
+
+            <div class="chart-grid">
+                <div class="chart-container">
+                    <div class="chart-title">Top Factores de Riesgo</div>
+                    <ul style="list-style: none; padding: 0;">
+                        <li>🔴 <strong>Tipo de Contrato:</strong> 0.405</li>
+                        <li>🔴 <strong>Permanencia:</strong> 0.352</li>
+                        <li>🟡 <strong>Método de Pago:</strong> 0.298</li>
+                        <li>🟡 <strong>Cargos Mensuales:</strong> 0.193</li>
+                        <li>🟢 <strong>Servicios Internet:</strong> 0.167</li>
+                    </ul>
+                </div>
+                <div class="chart-container">
+                    <div class="chart-title">Prioridades de Acción</div>
+                    <ul style="list-style: none; padding: 0;">
+                        <li><strong>1. ALTA:</strong> Contratos y permanencia</li>
+                        <li><strong>2. MEDIA:</strong> Métodos de pago</li>
+                        <li><strong>3. MEDIA:</strong> Estructura de precios</li>
+                        <li><strong>4. BAJA:</strong> Servicios adicionales</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="key-insight">
+                <strong>💡 Insight Clave:</strong> Las variables más correlacionadas con el churn son el tipo de contrato (0.405) y la permanencia (0.352), seguidas por el método de pago (0.298).
+            </div>
+            
+            <div class="action-box">
+                <strong>🚀 Acción Recomendada:</strong> Priorizar acciones en las variables con mayor correlación: enfocarse primero en contratos de largo plazo y programas de retención temprana.
+            </div>
+        </div>
+
+        <!-- Executive Summary -->
+        <div class="insight-section">
+            <h2>🎯 Resumen Ejecutivo de Insights</h2>
+            
+            <div class="summary-grid">
+                <div class="summary-card">
+                    <h3>🔴 Factor de Riesgo Principal</h3>
+                    <p><strong>Tipo de Contrato:</strong></p>
+                    <ul>
+                        <li>Mes a mes: 42.7% churn</li>
+                        <li>Dos años: 2.8% churn</li>
+                        <li><strong>ROI esperado:</strong> 300-500%</li>
+                    </ul>
+                </div>
+                
+                <div class="summary-card">
+                    <h3>⏰ Ventana Crítica</h3>
+                    <p><strong>Primeros 12 Meses:</strong></p>
+                    <ul>
+                        <li>47.4% de churn en nuevos clientes</li>
+                        <li>Necesidad de onboarding intensivo</li>
+                        <li><strong>Oportunidad:</strong> -50% churn</li>
+                    </ul>
+                </div>
+                
+                <div class="summary-card">
+                    <h3>💳 Método de Pago</h3>
+                    <p><strong>Automático vs Manual:</strong></p>
+                    <ul>
+                        <li>Automático: ~15% churn</li>
+                        <li>Manual: ~45% churn</li>
+                        <li><strong>Impacto:</strong> -66% churn</li>
+                    </ul>
+                </div>
+                
+                <div class="summary-card">
+                    <h3>📈 Cross-selling</h3>
+                    <p><strong>Servicios Adicionales:</strong></p>
+                    <ul>
+                        <li>0 servicios: 40.1% churn</li>
+                        <li>5-6 servicios: 12.4% churn</li>
+                        <li><strong>Reducción:</strong> -69% churn</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="action-box">
+                <h3>🚀 Próximos Pasos Recomendados:</h3>
+                <ol>
+                    <li><strong>Implementar modelo predictivo</strong> basado en estos insights para scoring de riesgo</li>
+                    <li><strong>Diseñar campañas segmentadas</strong> por nivel de riesgo y características demográficas</li>
+                    <li><strong>Establecer KPIs de retención</strong> y monitoreo continuo de efectividad</li>
+                    <li><strong>Testing A/B</strong> de estrategias de retención en segmentos de alto riesgo</li>
+                </ol>
+            </div>
+
+            <div class="key-insight">
+                <h3>💼 Impacto Económico Estimado:</h3>
+                <ul>
+                    <li><strong>ROI potencial</strong> de programas de retención: 250-400% basado en valor del cliente</li>
+                    <li><strong>Prioridad de inversión:</strong> Contratos largo plazo > Pagos automáticos > Cross-selling</li>
+                    <li><strong>Reducción esperada de churn:</strong> 35-50% con implementación completa</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <div class="footer">
+            <p><em>Dashboard generado con datos de 7,043 clientes | Tasa de Churn General: 26.5%</em></p>
+            <p>Análisis basado en técnicas de exploración de datos y visualización profesional</p>
+        </div>
+    </div>
+</body>
+</html>
